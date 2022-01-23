@@ -15,6 +15,7 @@ const key3 = ec.genKeyPair();
 app.use(cors());
 app.use(express.json());
 
+// store keys and balances in object
 const balances = {};
 balances[key1.getPublic().encode('hex')] = 100;
 balances[key2.getPublic().encode('hex')] = 50;
@@ -35,5 +36,6 @@ app.post('/send', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`);
+  // log balances
   console.log(balances);
 });
