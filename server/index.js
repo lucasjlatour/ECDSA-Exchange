@@ -31,12 +31,10 @@ app.get('/balance/:address', (req, res) => {
 
 app.post('/send', (req, res) => {
   const {sender, recipient, amount, msgHash, signature} = req.body;
-
   if (sender.verify(msgHash, signature)) {
     balances[sender] -= amount;
     balances[recipient] = (balances[recipient] || 0) + +amount;
     res.send({ balance: balances[sender] });
-    console.log(sender.verify(msgHash, signature));
   }
 });
 
