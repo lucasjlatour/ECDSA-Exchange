@@ -28,7 +28,7 @@ app.get('/balance/:address', (req, res) => {
 });
 
 app.post('/send', (req, res) => {
-  const {sender, recipient, amount} = req.body;
+  const {sender, recipient, amount, msgHash, signature } = req.body;
   balances[sender] -= amount;
   balances[recipient] = (balances[recipient] || 0) + +amount;
   res.send({ balance: balances[sender] });
