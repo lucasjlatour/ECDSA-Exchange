@@ -31,9 +31,13 @@ app.get('/balance/:address', (req, res) => {
 
 app.post('/send', (req, res) => {
   const {sender, recipient, amount, msgHash, signature} = req.body;
-  if (sender.verify(msgHash, signature)) {
+  const key = ec.keyFromPublic(sender, 'hex');
+  // perform verification and update balance if verified signature
+  if (key.verify(msgHash, signature)) {
     balances[sender] -= amount;
     balances[recipient] = (balances[recipient] || 0) + +amount;
+    res.send({ balance: balances[sender] });
+  } else {
     res.send({ balance: balances[sender] });
   }
 });
