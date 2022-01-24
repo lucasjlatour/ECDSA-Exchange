@@ -1,3 +1,5 @@
+/* eslint-disable strict */
+/* eslint-disable no-console */
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -28,14 +30,19 @@ app.get('/balance/:address', (req, res) => {
 });
 
 app.post('/send', (req, res) => {
-  const {sender, recipient, amount, msgHash, signature } = req.body;
-  balances[sender] -= amount;
-  balances[recipient] = (balances[recipient] || 0) + +amount;
-  res.send({ balance: balances[sender] });
+  const {sender, recipient, amount, msgHash, signature} = req.body;
+
+  if (sender.verify(msgHash, signature)) {
+    balances[sender] -= amount;
+    balances[recipient] = (balances[recipient] || 0) + +amount;
+    res.send({ balance: balances[sender] });
+    console.log(sender.verify(msgHash, signature));
+  }
 });
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}!`);
   // log balances
   console.log(balances);
+  console.log(key1.getPrivate().toString(16));
 });
