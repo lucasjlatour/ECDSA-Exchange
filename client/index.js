@@ -30,7 +30,7 @@ document.getElementById("transfer-amount").addEventListener('click', () => {
   const key = ec.keyFromPrivate(privateKey);
   
   // create message for hash and sign it
-  const message = JSON.stringify({sender, amount, address});
+  const message = JSON.stringify({sender, amount, recipient});
   const msgHash = SHA256(message).toString();
   const signature = key.sign(msgHash);
 
