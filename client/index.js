@@ -29,11 +29,11 @@ document.getElementById("transfer-amount").addEventListener('click', () => {
   const privateKey = document.getElementById("private-key").value;
   const key = ec.keyFromPrivate(privateKey);
   
-  // create message for hash
+  // create message for hash and sign it
   const message = JSON.stringify({sender, amount, address});
-  const msgHash = SHA256(message);
-  const signature = key.sign(msgHash.toString());
-  
+  const msgHash = SHA256(message).toString();
+  const signature = key.sign(msgHash);
+
   // send msgHash and signature to server
   const body = JSON.stringify({
     sender, amount, recipient, msgHash, signature
